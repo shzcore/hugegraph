@@ -212,4 +212,13 @@ public class ServerOptions extends OptionHolder {
                     disallowEmpty(),
                     "hugegraph:9fd95c9c-711b-415b-b85f-d4df46ba5c31"
             );
+
+    public static final ConfigListOption<String> NODE_ROLE =
+            new ConfigListOption<>(
+                    "node.role",
+                    "The role of nodes in the cluster, available type are " +
+                    "[master, worker]",
+                    disallowEmpty(),
+                    "master"
+            );
 }
