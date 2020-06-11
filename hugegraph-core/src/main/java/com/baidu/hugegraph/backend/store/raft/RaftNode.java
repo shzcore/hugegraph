@@ -49,12 +49,13 @@ public class RaftNode {
     private final Node node;
 
     public RaftNode(BackendStore store, RaftSharedContext context) {
-        this.stateMachine = new StoreStateMachine(store, context);
         try {
             this.node = this.initRaftNode(store, context);
         } catch (IOException e) {
             throw new BackendException("Failed to init raft node", e);
         }
+        this.stateMachine = new StoreStateMachine(this.node.getNodeId(),
+                                                  store, context);
     }
 
     public Node node() {
@@ -125,7 +126,7 @@ public class RaftNode {
         if (!this.node.isLeader()) {
             PeerId leaderId = this.node.getLeaderId();
             closure.failure(new BackendException("Current node isn't leader, " +
-                                                 "leader is %s", leaderId));
+                                                 "leader is [%s]", leaderId));
             return;
         }
 
